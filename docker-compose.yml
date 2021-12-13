@@ -7,6 +7,10 @@ services:
       - .:/src
     ports:
       - 8000:8000  # ホストマシンのポート8000を、docker内のポート8000に接続する
+  # client:
+  #   build:
+  #     context: ./client
+  #   tty: true
   broker:
     image: eclipse-mosquitto
     volumes:
@@ -14,6 +18,7 @@ services:
       - ./mosquitto/data:/mosquitto/data
       - ./mosquitto/log:/mosquitto/log
     user: "1000:1000"
+    stdin_open: true
   db:
     image: mysql:8.0
     platform: linux/x86_64
