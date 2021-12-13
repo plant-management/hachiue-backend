@@ -1,0 +1,26 @@
+{
+	"name": "backend",
+    "dockerComposeFile": [
+		"../docker-compose.yml"
+	],
+    "service": "backend",
+    "workspaceFolder": "/src",
+    "settings": {
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": false,
+        "python.linting.flake8Enabled": true,
+        "python.linting.lintOnSave": true,
+        "python.linting.mypyEnabled": true,
+        "python.formatting.provider": "black",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    "extensions":[
+        "ms-python.python",
+        "donjayamanne.githistory",
+        "oderwat.indent-rainbow",           // インデントをカラフルにする
+        "mosapride.zenkaku"                // 全角スペース
+    ]
+}
