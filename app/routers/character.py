@@ -1,3 +1,5 @@
+import random
+
 import app.cruds.character as character_cruds
 
 # import app.schemas.character as character_schema
@@ -49,3 +51,15 @@ async def character_infomation(
         "comment": comment,
         "character_image": character_image_base64,
     }
+
+
+@router.get("/character_tap_comment/{user_id}")
+async def character_tap(
+    user_id: str, plant_id: str, db: AsyncSession = Depends(get_db)
+):
+    comment1 = await character_cruds.get_character_comment(
+        db, user_id=user_id, plant_id=plant_id
+    )
+    comment_list = ("遊んでくれてありがとう!!", "えへへｗ嬉しいな", "いい天気だね", comment1)
+    comment = random.choice(comment_list)
+    return comment
