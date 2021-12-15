@@ -1,5 +1,6 @@
 import app.cruds.character as character_cruds
-import app.schemas.character as character_schema
+
+# import app.schemas.character as character_schema
 from app.db import get_db
 from app.func.img_func import calc_progress_day, png_to_base64
 from fastapi import APIRouter, Depends  # ,HTTPException,status
@@ -10,7 +11,8 @@ router = APIRouter()
 
 # ホーム → character画面遷移で必要なdataを送信
 @router.get(
-    "/character/{user_id}")#, response_model=character_schema.CharacterCreateResponse
+    "/character/{user_id}"
+)  # , response_model=character_schema.CharacterCreateResponse
 async def character_infomation(
     user_id: str, plant_id: str, db: AsyncSession = Depends(get_db)
 ):
