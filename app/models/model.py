@@ -48,6 +48,7 @@ class Image(Base):
 
     plant = relationship("Plant", back_populates="image")
     user = relationship("User", back_populates="image")
+    data = relationship("Data", back_populates="image")
 
 
 # 環境等のデータを登録
@@ -55,6 +56,7 @@ class Data(Base):
     __tablename__ = "data"
     user_id = Column(String(128), ForeignKey("user.user_id"))
     plant_id = Column(String(128), ForeignKey("plant.plant_id"))
+    image_id = Column(String(128), ForeignKey("image.image_id"))
     data_id = Column(String(128), primary_key=True)
     weather_icon = Column(String(128))
     temp = Column(Float)
@@ -65,5 +67,6 @@ class Data(Base):
     comment = Column(String(128), server_default="よろしくね!!")
     created_at = Column(DateTime, nullable=False, server_default=current_timestamp())
 
+    image = relationship("Image", back_populates="data")
     plant = relationship("Plant", back_populates="data")
     user = relationship("User", back_populates="data")
