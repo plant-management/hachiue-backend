@@ -54,3 +54,18 @@ async def get_character_data(db: AsyncSession, user_id: str, plant_id: str):
         )
     )
     return result.all()
+
+
+# キャラクタータップ時にコメントを送信
+async def get_character_comment(db: AsyncSession, user_id: str, plant_id: str):
+    result: Result = await (
+        db.execute(
+            select(production_model.Data.comment)
+            .order_by(desc(production_model.Data.created_at))
+            .filter(production_model.Data.user_id == user_id)
+            .filter(production_model.Data.plant_id == plant_id)
+            .limit(1)
+        )
+    )
+    comment = result.all()[0]["comment"]
+    return comment
