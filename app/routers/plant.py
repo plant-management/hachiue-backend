@@ -5,8 +5,8 @@ import uuid
 import app.cruds.plant as plant_cruds
 import app.schemas.plant as plant_schama
 from app.db import get_db
-
-# from app.func.data_func import get_sunlight_value, location, weather
+from app.func.data_func import get_sunlight_value, location, select_comment, weather
+from app.func.get_ftp_data import get_ftp
 from app.func.img_func import b64_to_png, calc_progress_day, png_to_base64
 from fastapi import APIRouter, Depends  # ,HTTPException,status
 from sqlalchemy.ext.asyncio.session import AsyncSession
@@ -32,20 +32,17 @@ async def create_new_plant_character(
         db, plant_create=plant_create, user_id=user_id, plant_id=plant_id
     )
     # データの取得
-    # post_code = await plant_cruds.get_post_code(db, user_id=user_id)
-    # lat, lon = location(post_code) #緯度経度を取得
-    # sunlight = get_sunlight_value(lat, lon) #日照度を取得する
-    # wth = weather(lat,lon)
-    # weather_icon = wth[0] #天気
-    # temp = wth[1] #気温
-    # humidity = wth[2] #湿度
-    sunlight = 100.3
-    weather_icon = "sunny"
-    temp = 24.8
-    humidity = 34
-    moisture = 44
-    comment_list = ("おなかすいたよ", "のどがかわいたよ", "あそんでよ～", "ねむたいよ～", "うれしいｗ")
-    comment = random.choice(comment_list)
+    post_code = await plant_cruds.get_post_code(db, user_id=user_id)
+    lat, lon = location(post_code)  # 緯度経度を取得
+    get_ftp()
+    sunlight = get_sunlight_value(lat, lon)  # 日照度を取得する
+    wth = weather(lat, lon)
+    weather_icon = wth[0]  # 天気
+    temp = wth[1]  # 気温
+    humidity = wth[2]  # 湿度
+    moisture = random.randrange(1, 100)
+    comment = select_comment(moisture, sunlight)
+
     time1 = await plant_cruds.get_plant_create_time(
         db, user_id=user_id, plant_id=plant_id
     )

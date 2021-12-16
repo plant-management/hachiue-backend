@@ -1,4 +1,5 @@
 import datetime
+import random
 
 import netCDF4
 import requests
@@ -62,7 +63,7 @@ def get_sunlight_value(lat_val, lon_val):
     mm = str(int(dt_past.strftime("%M")) // 10 * 10)
     hhmm = hh + mm
     nc = netCDF4.Dataset(
-        "H08_" + yyyymmdd + "_" + hhmm + "_rFL010_FLDK.02701_02601.nc", "r"
+        "./eisei/H08_" + yyyymmdd + "_" + hhmm + "_rFL010_FLDK.02701_02601.nc", "r"
     )
     # nc= netCDF4.Dataset('H08_20210929_1650_rFL010_FLDK.02701_02601.nc','r')#確認用
     val = nc.variables["PAR"][:]
@@ -80,10 +81,91 @@ def get_sunlight_value(lat_val, lon_val):
     else:
         print("location BAD")
         exit()
-    return val[lat_no][lon_no]
+    return float(val[lat_no][lon_no])
 
 
 # lat=33.9576#緯度を入力
 # lon=131.2711#経度を入力
 # sunlight=get_sunlight_value(lat, lon)#日照度を取得する
 # print(sunlight)#確認用
+
+
+def select_comment(moisture, sunlight):
+    comment = []
+
+    # 時間
+    dt_now = datetime.datetime.now()
+    hh = int(dt_now.strftime("%H"))
+    if 0 <= hh < 2:
+        comment.append("おやすみー。")
+    elif 2 <= hh < 6:
+        comment.append("zzz")
+    elif 6 <= hh <= 10:
+        comment.append("おはよー。今日も一日頑張ろうね!")
+    elif 10 < hh <= 17:
+        comment.append("こんにちは!")
+    elif 17 < hh <= 20:
+        comment.append("こんばんは!")
+    elif 20 < hh <= 24:
+        comment.append("もう夜だねー。")
+
+    # 日照量
+    if 0 <= sunlight < 500:
+        comment.append("外暗いねー。")
+    elif 500 <= sunlight < 700:
+        comment.append("ちょっと暗いね。ちょっとだけ。")
+    elif 700 <= sunlight < 1000:
+        comment.append("日向ぼっこはいいねー。ずっとこうしていたいよ。")
+    elif 1000 <= sunlight:
+        comment.append("日差しが強いねー。日焼けしそうだよ…。")
+    # 土壌水分
+    if 0 <= moisture < 33:
+        comment.append("のどがカラカラだよー")
+    elif 33 <= moisture <= 66:
+        comment.append("今日はすごく気持ちがいいな!")
+    elif 66 < moisture <= 100:
+        comment.append("じめじめするー。")
+
+    # 今後追加するかも…
+    """
+    #天気
+    if(weather_icon=="Thunderstorm"):#雷雨
+        comment.append('雨ひどいねー。こんな日は外出たくないよー。')
+    elif(weather_icon=="Drizzle"):#霧雨
+        comment.append('ねー。見てみて。霧が濃くてなんも見えん笑')
+    elif(weather_icon=="Rain"):#雨
+        comment.append('恵みの雨!雨ごいした甲斐があったよー')
+    elif(weather_icon=="Snow"):#雪
+        comment.append('ゆっ、雪だーー。雪だるま作ろうよ')
+    elif(weather_icon=="Clear"):#晴天
+        comment.append('おー、雲一つない空!')
+    elif(weather_icon=="Clouds"):#雲
+        comment.append('雲がモクモクだね。モクモク。')
+    
+    #気温
+    if(15<=temp<=25):
+        comment.append('心地いいねー')
+    elif(10<=temp<15):
+        comment.append('ちょっと冷えるね')
+    elif(temp<10):
+        comment.append('寒いよー')
+    elif(25<temp<30):
+        comment.append('ちょっと暑いねー')
+    elif(30<temp):
+        comment.append('暑すぎだよー')
+    """
+
+    return comment[random.randrange(len(comment))]
+
+
+# sunlight_val=1087.3#日照度を入力
+# moisture_val=45#土壌水分量を入力
+# #今後使うかも
+# '''
+# weather_icon='Clouds'
+# temp=35.2
+# humidity=67
+# '''
+# text=select_comment(moisture=moisture_val,sunlight=sunlight_val)#コメントを選定する
+
+# # print(text)#確認用
