@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class UserBase(BaseModel):
@@ -10,7 +10,7 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     user_name: str
-    post_code: str
+    post_code: str = Field(...,example = "7550092")
     wifi_ssid: Optional[str]
     wifi_pass: Optional[str]
     birthday: date
