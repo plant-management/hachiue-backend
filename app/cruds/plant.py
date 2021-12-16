@@ -53,6 +53,7 @@ async def create_data(
     db: AsyncSession,
     user_id: str,
     plant_id: str,
+    image_id: str,
     data_id: str,
     weather_icon: str,
     temp: float,
@@ -65,6 +66,7 @@ async def create_data(
     data = production_model.Data(
         user_id=user_id,
         plant_id=plant_id,
+        image_id=image_id,
         data_id=data_id,
         weather_icon=weather_icon,
         temp=temp,
