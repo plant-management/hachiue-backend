@@ -36,6 +36,21 @@ async def get_one_character_image(db: AsyncSession, user_id: str, plant_id: str)
     return result.all()
 
 
+# imageテーブルからキャラクターの最新のimage_idを取得
+async def get_image_id(db: AsyncSession, user_id: str, plant_id: str):
+    result: Result = await (
+        db.execute(
+            select(production_model.Image.image_id)
+            .order_by(desc(production_model.Image.created_at))
+            .filter(production_model.Image.user_id == user_id)
+            .filter(production_model.Image.plant_id == plant_id)
+            .limit(1)
+        )
+    )
+    image_id = result.all()
+    return image_id[0]["image_id"]
+
+
 # [キャラクター画面用]Data_テーブルメイン画面に必要なデータを取得
 async def get_character_data(db: AsyncSession, user_id: str, plant_id: str):
     result: Result = await (
