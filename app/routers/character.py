@@ -20,6 +20,10 @@ router = APIRouter()
 async def character_infomation(
     user_id: str, plant_id: str, db: AsyncSession = Depends(get_db)
 ):
+    # キャラクターの最新のimage_idを取得する
+    image_id = await character_cruds.get_image_id(
+        db, user_id=user_id, plant_id=plant_id
+    )
     # 最新のデータを取得する
     data_id = str(uuid.uuid4())
     weather_icon = "sunny"
@@ -35,6 +39,7 @@ async def character_infomation(
         db,
         user_id=user_id,
         plant_id=plant_id,
+        image_id=image_id,
         data_id=data_id,
         weather_icon=weather_icon,
         temp=temp,
