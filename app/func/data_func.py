@@ -42,7 +42,7 @@ def location(post_code):
     url = "http://api.openweathermap.org/data/2.5/weather"
     res = requests.get(url, params=params)
     k = res.json()
-    return (k["coord"]["lat"], k["coord"][""])
+    return (k["coord"]["lat"], k["coord"]["lon"])
 
 
 # post_code = "7550068"
