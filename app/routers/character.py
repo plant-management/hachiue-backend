@@ -6,6 +6,8 @@ import app.cruds.plant as plant_cruds
 
 # import app.schemas.character as character_schema
 from app.db import get_db
+from app.func.data_func import get_sunlight_value, location, select_comment, weather
+from app.func.get_ftp_data import get_ftp
 from app.func.img_func import calc_progress_day, png_to_base64
 from fastapi import APIRouter, Depends  # ,HTTPException,status
 from sqlalchemy.ext.asyncio.session import AsyncSession
@@ -26,14 +28,17 @@ async def character_infomation(
     )
     # 最新のデータを取得する
     data_id = str(uuid.uuid4())
-    weather_icon = "sunny"
-    temp = 24.8
-    humidity = 34
-    sunlight = 100.3
-    moisture = 87
-    satisfaction = 50  # 完全ダミーデータ
-    comment_list = ("おなかすいたよ", "のどがかわいたよ", "あそんでよ～", "ねむたいよ～", "うれしいｗ")
-    comment = random.choice(comment_list)
+    post_code = await plant_cruds.get_post_code(db, user_id=user_id)
+    lat, lon = location(post_code)  # 緯度経度を取得
+    get_ftp()
+    sunlight = get_sunlight_value(lat, lon)  # 日照度を取得する
+    wth = weather(lat, lon)
+    weather_icon = wth[0]  # 天気
+    temp = wth[1]  # 気温
+    humidity = wth[2]  # 湿度
+    moisture = random.randrange(1, 100)
+    comment = select_comment(moisture, sunlight)
+    satisfaction = random.randrange(1, 9)  # 完全ダミーデータ
 
     await plant_cruds.create_data(
         db,
