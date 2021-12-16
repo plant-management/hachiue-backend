@@ -87,6 +87,7 @@ async def create_new_plant_character(
         db,
         user_id=user_id,
         plant_id=plant_id,
+        image_id=image_id,
         data_id=data_id,
         weather_icon=weather_icon,
         temp=temp,

@@ -1,6 +1,8 @@
 import random
+import uuid
 
 import app.cruds.character as character_cruds
+import app.cruds.plant as plant_cruds
 
 # import app.schemas.character as character_schema
 from app.db import get_db
@@ -18,6 +20,36 @@ router = APIRouter()
 async def character_infomation(
     user_id: str, plant_id: str, db: AsyncSession = Depends(get_db)
 ):
+    # キャラクターの最新のimage_idを取得する
+    image_id = await character_cruds.get_image_id(
+        db, user_id=user_id, plant_id=plant_id
+    )
+    # 最新のデータを取得する
+    data_id = str(uuid.uuid4())
+    weather_icon = "sunny"
+    temp = 24.8
+    humidity = 34
+    sunlight = 100.3
+    moisture = 87
+    satisfaction = 50  # 完全ダミーデータ
+    comment_list = ("おなかすいたよ", "のどがかわいたよ", "あそんでよ～", "ねむたいよ～", "うれしいｗ")
+    comment = random.choice(comment_list)
+
+    await plant_cruds.create_data(
+        db,
+        user_id=user_id,
+        plant_id=plant_id,
+        image_id=image_id,
+        data_id=data_id,
+        weather_icon=weather_icon,
+        temp=temp,
+        humidity=humidity,
+        sunlight=sunlight,
+        moisture=moisture,
+        satisfaction=satisfaction,
+        comment=comment,
+    )
+
     plant_data = await character_cruds.get_character_plant(
         db, user_id=user_id, plant_id=plant_id
     )
