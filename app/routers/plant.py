@@ -41,14 +41,8 @@ async def create_new_plant_character(
     temp = wth[1]  # 気温
     humidity = wth[2]  # 湿度
     moisture = random.randrange(1, 100)
-
-    # sunlight =110.2
-    # temp =20.1
-
     comment = select_comment(moisture, sunlight)
-    print(comment)
-    # comment_list = ("おなかすいたよ", "のどがかわいたよ", "あそんでよ～", "ねむたいよ～", "うれしいｗ")
-    # comment = random.choice(comment_list)
+
     time1 = await plant_cruds.get_plant_create_time(
         db, user_id=user_id, plant_id=plant_id
     )
