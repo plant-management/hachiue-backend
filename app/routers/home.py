@@ -1,15 +1,13 @@
-from fastapi import APIRouter,Depends#,HTTPException,status
-from sqlalchemy.ext.asyncio.session import AsyncSession
-
 import app.cruds.home as home_cruds
-
-from app.func.img_func import calc_progress_day, png_to_base64
 from app.db import get_db
+from app.func.img_func import calc_progress_day, png_to_base64
+from fastapi import APIRouter, Depends  # ,HTTPException,status
+from sqlalchemy.ext.asyncio.session import AsyncSession
 
 router = APIRouter()
 
 
-#ホーム画面に必要な、ユーザーのすべての植物の情報を返す
+# ホーム画面に必要な、ユーザーのすべての植物の情報を返す
 @router.get("/home/{user_id}")
 async def send_home_infomation(user_id: str, db: AsyncSession = Depends(get_db)):
     home_data = await home_cruds.get_home_plant(db, user_id=user_id)
@@ -23,12 +21,14 @@ async def send_home_infomation(user_id: str, db: AsyncSession = Depends(get_db))
         plant_name = home_data[counter]["plant_name"]
         plant_type = home_data[counter]["plant_type"]
         plant_label_color = home_data[counter]["plant_label_color"]
-        all_plant.append({
-            "plant_name": plant_name,
-            "plant_type": plant_type,
-            "plant_label_color": plant_label_color,
-            "day": days,
-            "character_image_path": base64_character_image
-            })
+        all_plant.append(
+            {
+                "plant_name": plant_name,
+                "plant_type": plant_type,
+                "plant_label_color": plant_label_color,
+                "day": days,
+                "character_image": base64_character_image,
+            }
+        )
         counter += 1
     return all_plant
