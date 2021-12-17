@@ -1,6 +1,6 @@
 import datetime
 from ftplib import FTP
-from time import sleep
+# from time import sleep
 
 # import schedule
 
