@@ -9,6 +9,7 @@ async def get_home_plant(db: AsyncSession, user_id: str):
     result: Result = await (
         db.execute(
             select(
+                production_model.Plant.plant_id,
                 production_model.Plant.plant_name,
                 production_model.Plant.plant_type,
                 production_model.Plant.created_at,
