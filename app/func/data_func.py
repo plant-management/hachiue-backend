@@ -62,6 +62,10 @@ def get_sunlight_value(lat_val, lon_val):
     hh = dt_past.strftime("%H")
     mm = str(int(dt_past.strftime("%M")) // 10 * 10)
     hhmm = hh + mm
+    if hhmm == "0240":
+        hhmm = "0230" 
+    if hhmm == "1440":
+        hhmm = "1430"
     nc = netCDF4.Dataset(
         "./eisei/H08_" + yyyymmdd + "_" + hhmm + "_rFL010_FLDK.02701_02601.nc", "r"
     )
@@ -169,3 +173,30 @@ def select_comment(moisture, sunlight):
 # text=select_comment(moisture=moisture_val,sunlight=sunlight_val)#コメントを選定する
 
 # # print(text)#確認用
+
+# 表情変更用
+def satisfact(sunlight, moisture, health):
+    dt_now = datetime.datetime.now()
+    hh = int(dt_now.strftime("%H"))
+    if 0 <= hh < 7 or 19 <= hh <= 24:
+        sunlight_res = 1
+    elif 7 <= hh < 19:
+        if 0 <= sunlight < 500:
+            sunlight_res = 1 / 3
+        elif 500 <= sunlight < 700:
+            sunlight_res = 2 / 3
+        elif 700 <= sunlight < 1000:
+            sunlight_res = 3 / 3
+        elif 1000 <= sunlight:
+            sunlight_res = 1 / 2
+
+    if 0 <= moisture < 33:
+        moisture_res = moisture / 49.5
+    elif 33 <= moisture <= 66:
+        moisture_res = (49.5 - abs(moisture - 49.5)) / 49.5
+    elif 66 < moisture <= 100:
+        moisture_res = (100 - moisture) / 49.5
+
+    health_res = health / 3
+
+    return (sunlight_res + moisture_res + health_res) / 3

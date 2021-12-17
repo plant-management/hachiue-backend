@@ -5,7 +5,13 @@ import uuid
 import app.cruds.plant as plant_cruds
 import app.schemas.plant as plant_schama
 from app.db import get_db
-from app.func.data_func import get_sunlight_value, location, select_comment, weather
+from app.func.data_func import (
+    get_sunlight_value,
+    location,
+    satisfact,
+    select_comment,
+    weather,
+)
 from app.func.get_ftp_data import get_ftp
 from app.func.img_func import b64_to_png, calc_progress_day, png_to_base64
 from fastapi import APIRouter, Depends  # ,HTTPException,status
@@ -57,9 +63,11 @@ async def create_new_plant_character(
     growth = 2
     health = 2
     # 表情に関するパラメーターの算出
-    satisfaction = int(
-        (health * sunlight * moisture) / 200
-    )  # 母数はmax値 moistureは0-100 or 1-3 迷い中 health 1-3
+    satisfaction = satisfact(sunlight, moisture, health)
+
+    # satisfaction = int(
+    #     (health * sunlight * moisture) / 200
+    # )  # 母数はmax値 moistureは0-100 or 1-3 迷い中 health 1-3
 
     # 美少女画像の生成：一氏君
     # UPLOAD_CHARACTER_FOLDER = "./picture/" + str(user_id) + "/character_image/"
@@ -94,6 +102,7 @@ async def create_new_plant_character(
         satisfaction=satisfaction,
         comment=comment,
     )
+    satisfaction = int(satisfaction * 100)
     return {
         "user_id": user_id,
         "plant_id": plant_id,

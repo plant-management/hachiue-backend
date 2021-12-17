@@ -63,7 +63,7 @@ class Data(Base):
     humidity = Column(Integer)
     sunlight = Column(Float, nullable=True)
     moisture = Column(Integer, nullable=True)
-    satisfaction = Column(Integer)
+    satisfaction = Column(Float, nullable=True)
     comment = Column(String(128), server_default="よろしくね!!")
     created_at = Column(DateTime, nullable=False, server_default=current_timestamp())
 
