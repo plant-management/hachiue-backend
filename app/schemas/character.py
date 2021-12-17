@@ -8,7 +8,7 @@ from pydantic import BaseModel
 class CharacterCreateResponse(BaseModel):
     plant_name: str
     plant_type: str
-    days: date
+    days: timedelta
     wether_icon: Optional[str]
     temp: Optional[float]
     humidity: Optional[int]
