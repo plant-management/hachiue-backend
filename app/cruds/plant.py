@@ -109,3 +109,16 @@ async def get_plant_create_time(
     )
     time = result.all()
     return time[0]["created_at"]
+
+
+# 植物名と植物種類を取得
+async def get_plant_name_and_type(db: AsyncSession, user_id: str, plant_id: str):
+    result: Result = await (
+        db.execute(
+            select(production_model.Plant.plant_name, production_model.Plant.plant_type)
+            .filter(production_model.Plant.user_id == user_id)
+            .filter(production_model.Plant.plant_id == plant_id)
+        )
+    )
+    data = result.all()
+    return data[0]["plant_name"], data[0]["plant_type"]

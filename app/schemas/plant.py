@@ -23,6 +23,7 @@ class PlantCreateResponse(PlantCreate):
     comment: str
     satisfaction: Optional[int]
     days: timedelta
+    character_image: str
 
     class Config:
         orm_mode = True
