@@ -16,11 +16,13 @@ async def send_timeline(user_id: str, db: AsyncSession = Depends(get_db)):
     # 画像のbase64 とその他のデータを辞書型で結合したい。もっといい書き方はありそう。
     for i in data:
         character_image = png_to_base64(i["character_image_path"])
+        plant_id = i["plant_id"]
         plant_name = i["plant_name"]
         comment = i["comment"]
         created_at = i["created_at"]
         timeline_data.append(
             {
+                "plant_id": plant_id,
                 "character_image": character_image,
                 "plant_name": plant_name,
                 "comment": comment,

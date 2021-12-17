@@ -18,11 +18,13 @@ async def send_home_infomation(user_id: str, db: AsyncSession = Depends(get_db))
         base64_character_image = png_to_base64(i["character_image_path"])
         time1 = home_data[counter]["created_at"]
         days = calc_progress_day(time1)
+        plant_id = home_data[counter]["plant_id"]
         plant_name = home_data[counter]["plant_name"]
         plant_type = home_data[counter]["plant_type"]
         plant_label_color = home_data[counter]["plant_label_color"]
         all_plant.append(
             {
+                "plant_id": plant_id,
                 "plant_name": plant_name,
                 "plant_type": plant_type,
                 "plant_label_color": plant_label_color,
