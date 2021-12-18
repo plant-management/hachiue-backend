@@ -11,6 +11,7 @@ from app.func.data_func import (
     satisfact,
     select_comment,
     weather,
+    weather_icon_select,
 )
 from app.func.get_ftp_data import get_ftp
 from app.func.classification_plant import classification_growth, classification_health
@@ -45,6 +46,7 @@ async def create_new_plant_character(
     sunlight = get_sunlight_value(lat, lon)  # 日照度を取得する
     wth = weather(lat, lon)
     weather_icon = wth[0]  # 天気
+    weather_icon = weather_icon_select(weather_icon)
     temp = wth[1]  # 気温
     humidity = wth[2]  # 湿度
     moisture = random.randrange(1, 100)
