@@ -197,7 +197,7 @@ def satisfact(sunlight, moisture, health):
     elif 66 < moisture <= 100:
         moisture_res = (100 - moisture) / 49.5
 
-    health_res = health / 3
+    health_res = health
 
     return (sunlight_res + moisture_res + health_res) / 3
 
