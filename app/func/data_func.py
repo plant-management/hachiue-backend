@@ -197,6 +197,25 @@ def satisfact(sunlight, moisture, health):
     elif 66 < moisture <= 100:
         moisture_res = (100 - moisture) / 49.5
 
-    health_res = health / 3
+    health_res = health
 
     return (sunlight_res + moisture_res + health_res) / 3
+
+
+#天気の変更関数
+def weather_icon_select(weather_icon):
+    weather_icon = weather_icon.strip()
+    if(weather_icon=="Thunderstorm"):#雷雨
+        weather_icon = "rain"
+    elif(weather_icon=="Drizzle"):#霧雨
+        weather_icon = "rain"
+    elif(weather_icon=="Rain"):#雨
+        weather_icon = "rain"
+    elif(weather_icon=="Snow"):#雪
+        weather_icon = "rain"
+    elif(weather_icon=="Clear"):#晴天
+        weather_icon = "sunny"
+    elif(weather_icon=="Clouds"):#雲
+        weather_icon = "cloud"
+
+    return weather_icon

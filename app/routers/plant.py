@@ -11,8 +11,10 @@ from app.func.data_func import (
     satisfact,
     select_comment,
     weather,
+    weather_icon_select,
 )
 from app.func.get_ftp_data import get_ftp
+from app.func.classification_plant import classification_growth, classification_health
 from app.func.img_func import b64_to_png, calc_progress_day, png_to_base64
 from fastapi import APIRouter, Depends  # ,HTTPException,status
 from sqlalchemy.ext.asyncio.session import AsyncSession
@@ -44,6 +46,7 @@ async def create_new_plant_character(
     sunlight = get_sunlight_value(lat, lon)  # 日照度を取得する
     wth = weather(lat, lon)
     weather_icon = wth[0]  # 天気
+    weather_icon = weather_icon_select(weather_icon)
     temp = wth[1]  # 気温
     humidity = wth[2]  # 湿度
     moisture = random.randrange(1, 100)
@@ -59,9 +62,13 @@ async def create_new_plant_character(
     os.makedirs(UPLOAD_PLANT_FOLDER, exist_ok=True)
     plant_image_path = b64_to_png(b64_image, UPLOAD_PLANT_FOLDER)
 
+
     # growth,healthの推定：綾部君
-    growth = 2
-    health = 2
+    jpg_path = "plant1.jpg"
+    growth = classification_growth(jpg_path)
+    health = classification_health(jpg_path)
+    # growth = 2
+    # health = 2
     # 表情に関するパラメーターの算出
     satisfaction = satisfact(sunlight, moisture, health)
 
