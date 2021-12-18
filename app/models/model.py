@@ -42,8 +42,8 @@ class Image(Base):
     image_id = Column(String(128), primary_key=True)
     plant_image_path = Column(String(128))
     character_image_path = Column(String(128), nullable=True)
-    growth = Column(Integer)
-    health = Column(Integer)
+    growth = Column(Float)
+    health = Column(Float)
     created_at = Column(DateTime, nullable=False, server_default=current_timestamp())
 
     plant = relationship("Plant", back_populates="image")

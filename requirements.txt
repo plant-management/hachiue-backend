@@ -31,6 +31,9 @@ SQLAlchemy==1.4.28
 starlette==0.16.0
 toml==0.10.2
 tomli==1.2.3
+torch==1.10.1+cpu
+torchaudio==0.10.1+cpu
+torchvision==0.11.2+cpu
 typing_extensions==4.0.1
 urllib3==1.26.7
 uvicorn==0.16.0
