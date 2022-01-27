@@ -1,3 +1,4 @@
+import glob
 import os
 import random
 import uuid
@@ -74,7 +75,10 @@ async def create_new_plant_character(
     # 美少女画像の生成：一氏君
     # UPLOAD_CHARACTER_FOLDER = "./picture/" + str(user_id) + "/character_image/"
     os.makedirs(UPLOAD_PLANT_FOLDER, exist_ok=True)
-    character_image_path = "test1.png"  # ダミーデータ
+    character_image_path = (
+        "./dummy_picture/test" + str(random.randint(1, 12)) + ".png"
+    )  # ダミーデータ
+    # character_image_path = "test1.png"
     character_image_base64 = png_to_base64(character_image_path)
     # 植物画像は、pngの場合：plant_image_path, b64の場合：b64_imageです。
     # 保存場所は、character_image_path = UPLOAD_CHARACTER_FOLDER + str(uuid.uuid4()) + ".png"
