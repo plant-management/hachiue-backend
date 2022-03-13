@@ -12,7 +12,7 @@ from app.func.data_func import (
     satisfact,
     select_comment,
     weather,
-    weather_icon_select
+    weather_icon_select,
 )
 from app.func.get_ftp_data import get_ftp
 from app.func.img_func import b64_to_png, calc_progress_day, png_to_base64

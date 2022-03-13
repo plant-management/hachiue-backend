@@ -6,7 +6,7 @@ WORKDIR /src
 
 COPY ./requirements.txt ./requirements.txt
 
-# pipを使ってpoetryをインストール
+# pipを使ってrequirementsをインストール
 RUN pip install -r requirements.txt
 
 # uvicornのサーバーを立ち上げる
